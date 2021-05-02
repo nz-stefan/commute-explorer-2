@@ -1,0 +1,174 @@
+/** Material design cards ****************************************************/
+
+.card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.card {
+  /*margin-top: 10px;*/
+  box-sizing: border-box;
+  /*border-radius: 2px;*/
+  background-clip: padding-box;
+  height: 100%;
+}
+.card .card-content {
+  padding: 16px;
+  /*border-radius: 4px;*/
+  background-clip: padding-box;
+  box-sizing: border-box;
+  height: 100%;
+}
+.card .card-content p {
+  margin: 0;
+  color: inherit;
+}
+
+.tile-headline {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: -7px;
+  margin-left: 3px;
+}
+
+.tile-subheadline {
+  text-transform: uppercase;
+  font-size: 10px;
+  color: gray;
+  margin: -9px 0 10px 3px;
+}
+
+
+
+/** Appearance of form labels ************************************************/
+
+.control-label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 400;
+    color: gray;
+    font-size: 0.9em;
+}
+
+.pretty {
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.pretty .state label {
+    position: initial;
+    display: inline-block;
+    margin: 0;
+    text-indent: 1.5em;
+    min-width: calc(1em + 2px);
+    font-family: "Roboto Condensed";
+}
+
+
+/** Appearance of data tables ************************************************/
+
+.dataTables_paginate {
+  font-size: 0.85em;
+}
+
+
+/** Seet alert modal adjustments *********************************************/
+
+.swal-modal {
+    width: 478px;
+    opacity: 0;
+    pointer-events: none;
+    background-color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    position: static;
+    margin: 100px auto 20px auto;  /* This shifts the modal box down by 100px to not make it overlap with the menu */
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    z-index: 10001;
+    transition: opacity .2s,-webkit-transform .3s;
+    transition: transform .3s,opacity .2s;
+    transition: transform .3s,opacity .2s,-webkit-transform .3s;
+}
+
+
+/* Boostrap adjustments *************************************************************/
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 6px;
+    padding-left: 6px;
+    margin-top: 5px;
+}
+
+
+/* Simple Infobox *******************************************************************/
+
+.simple-infobox-orange {
+  background-color: #ca8102;
+}
+
+.simple-infobox-green {
+  background-color: #adb514;
+}
+
+.simple-infobox-purple {
+  background-color: #5a1a8e;
+}
+
+.simple-infobox-blue {
+  background-color: #0187bc;
+}
+
+.simple-infobox-red {
+  background-color: #9f2304;
+}
+
+.simple-infobox-default {
+  text-align: center;
+  border-radius: 3px;
+  margin: 5px 0;
+}
+
+.simple-infobox-value {
+  color: #e6e6e6;
+  font-weight: bold;
+  font-size: 12pt;
+  font-family: "Roboto Condensed";
+}
+
+.simple-infobox-title {
+  font-size: 11px;
+  color: #e6e6e6;
+  margin-top: -5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Roboto Condensed";
+}
+
+
+/** Misc ********************************************************/
+
+/* remove blue focus outline border of map */
+canvas:focus {
+  outline: none;
+}
+
+.explorer-section {
+  position: relative;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+  z-index: 0;
+  background-size: cover;
+}

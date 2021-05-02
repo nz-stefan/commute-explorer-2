@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--  
+    Document Title
+    =============================================
+    -->
+    <title>Commute Explorer</title>
+    
+    <!-- Shiny added header -->
+
+    {{ headContent() }}
+    {{ bootstrapLib() }}
+    
+    <!--  
+    Favicons
+    =============================================
+    -->
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!--  
+    Stylesheets
+    =============================================
+    
+    -->
+    <!-- Default stylesheets-->
+    <!--link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"-->
+    <!-- Template specific stylesheets-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="assets/lib/animate.css/animate.css" rel="stylesheet">
+    <link href="assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet">
+    <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet">
+    <link href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css" rel="stylesheet">
+    <link href="assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet">
+    <link href="assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet">
+    <!-- Main stylesheet and color file-->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style-custom.css" rel="stylesheet">
+    <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
+  </head>
+  <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+    <main>
+      <div class="page-loader">
+        <div class="loader">Loading...</div>
+      </div>
+      <nav class="navbar navbar-custom navbar-transparent navbar-fixed-top one-page" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="index.html"><img src="assets/images/dsa-logo-v3.svg" width="120" style="margin-top:-10px"></a>
+          </div>
+          <div class="collapse navbar-collapse" id="custom-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#totop">Home</a></li>
+              <li><a class="section-scroll" href="#explorer">Explorer</a></li>
+              <li><a class="section-scroll" href="#project">Project</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <section class="home-section home-full-height bg-dark bg-gradient" id="home" data-background="assets/images/harley-davidson-wdc9ZAiwBB4-unsplash.jpg">
+        <div class="titan-caption">
+          <div class="caption-content">
+            <div class="font-alt mb-20 titan-title-size-1">There and back again</div>
+            <div class="font-alt mb-30 titan-title-size-4">Commute Explorer</div>
+            <a class="section-scroll btn btn-border-w btn-round" href="#data">Learn More</a>
+          </div>
+        </div>
+      </section>
+      <div class="main">
+        <section class="explorer-section home-full-height bg-dark-90" id="explorer">
+            {{ commute_explorer }}
+        </section>
+
+        <section class="module-small" id="project">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <h2 class="module-title font-alt">Project</h2>
+                <div class="module-subtitle font-serif">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="post">
+                  <div class="post-header font-alt">
+                    <h1 class="post-title">There and back again</h1>
+                  </div>
+                  <div class="post-entry">
+                    <p>
+                      This web application was submitted to the 
+                      <a href="https://www.stats.govt.nz/2018-census/there-and-back-again-data-visualisation-competition/">"There and Back Again" data visualisation competition</a> 
+                      organised by <a href="https://www.stats.govt.nz/">Stats NZ</a> 
+                      to find an original, fun, and interactive visual representation of the 2018 Census commuter data. 
+                    </p>
+                    
+                    <p>
+                      I wanted to create an awesome-looking, map based web application 
+                      that captures the user's interest long enough to spent time playing and engaging with the data.
+                      The UX was very important to achieve this goal. Thus a significant chunk of development time 
+                      was invested into tweaking colours, fonts and the arrangement of UI elements. 
+                    </p>
+                    
+                    <p>
+                      Plain numbers are often hard to comprehend and so I made some effort to make commuter figures more relatable.
+                      The mode of travel histograms give an impression of how fractions of commuters distribute
+                      across the various places of residence and work.
+                      I was surprised to see the low number of commuters using public transportation and
+                      that only very few places of work (mostly in the CBDs of the higly populated regions) 
+                      seem to benefit from the availability of trains, buses and ferries.
+                      There are more people working at home than there are commuters using public transport.
+                      Sadly, most of our commutes still rely mostly on cars.
+                    </p>
+                    
+                    <h4 class="font-alt">Data</h4>
+                    <p>
+                      The data behind this application is available in the 
+                      <a href="https://datafinder.stats.govt.nz/data/category/census/2018/commuter-view/?_ga=2.143880757.1699143700.1594461462-854170190.1593163189">Datafinder</a> 
+                      hosted by Stats NZ. 
+                      Additionally, I used the <a href="https://datafinder.stats.govt.nz/layer/92212-statistical-area-2-2018-generalised/">Statistal Area 2 2018</a> data set 
+                      which contains shape files of the statistical areas referenced in the commuter data set.
+                      I simplified the polygons in those shape files to reduce the amount of data to display in the browser for this application.
+                      I also processed the <a href="https://datafinder.stats.govt.nz/table/104285-geographic-areas-file-2020/">Geographic Areas File 2020</a> to group statistical areas into the main NZ regions. 
+                    </p>
+                    
+                    <h4 class="font-alt">Application</h4>
+                    <p>
+                      This application is developed using the R Shiny web application framework.
+                      I like beautiful data products and so I used <a href="https://shiny.rstudio.com/articles/templates.html">HTML templates</a> to create a unique look for this <a href="https://shiny.rstudio.com/">application</a>. 
+                      The template is called <a href="https://markup.themewagon.com/titan/index.html">Titan</a> and 
+                      is freely available for download. 
+                      There was a bit more JavaScript foo necessary to customise some of the visualisations.
+                    </p>
+                    
+                    <h4 class="font-alt">Deployment</h4>
+                    <p>
+                      The development environment of this project is a <a href="https://hub.docker.com/r/rocker/rstudio/">Rocker</a> based <a href="https://www.docker.com/">Docker</a> container running the Open Source version of <a href="https://rstudio.com/products/rstudio/#rstudio-server">RStudio Server</a>. Docker allows to control all aspects of the development environment, i.e. operating system, system packages and R version. The versions of R packages are tracked using the <a href="https://github.com/rstudio/renv">renv</a> package. The containerisation intends to simplify the setup of a working development environment.
+                    </p>
+                    
+                    <p>
+                      The application itself is hosted on RStudio's <a href="https://www.shinyapps.io/">shinyapps.io</a> 
+                      which offers push button deployment and a generous free tier.
+                    </p>
+                    
+                    <p>
+                      All code developed for this application is open source and available on <a href="https://github.com/nz-stefan/commute-explorer">GitHub</a>.
+                    </p>
+                    
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Themes & Assets</h5>
+                  <p>
+                    The amazing theme used in this application is called <a href="https://markup.themewagon.com/titan/index.html">Titan</a> and is developed by <a href="https://themewagon.com/author/themewagon/">ThemeWagon</a>. It can be downloaded for free!
+                  </p>
+                  <p>
+                    The hero image on the top of this application was created by <a href="https://unsplash.com/@harleydavidson">Harely Davidson</a> and made available at <a href="https://unsplash.com/">Unsplash</a> for free.
+                  </p>
+                </div>
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Charts & Graphs</h5>
+                  <p>
+                    The beautiful <a href="https://echarts.apache.org/en">ECHARTS</a> engine is behind all charts used in this project. The engine is very comprehensive, supports many chart types and comes with a selection of stylish themes. John Coene developed an easy to use <a href="https://github.com/JohnCoene/echarts4r">R wrapper</a> complete with Shiny support, documentation and impressive examples.
+                  </p>
+                </div>
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Code</h5>
+                  <p>Open Source and available on <a href="https://github.com/nz-stefan/commute-explorer">GitHub</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <section class="module-small bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Developed By</h5>
+                  <p>
+                    Stefan Schliebs<br>
+                    Auckland, New Zealand
+                  </p>
+                  <p>
+                    <a href="https://www.linkedin.com/in/sschliebs/"><i class="fa fa-linkedin" style="font-size:20px; padding-right:15px"></i></a>
+                    <a href="https://github.com/nz-stefan/"><i class="fa fa-github" style="font-size:20px; padding-right:25px"></i></a>
+                  </p>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Learn Shiny?</h5>
+                  <p>
+                    Check out the <a href="https://www.datascienceacademy.co.nz">Data Science Academy</a> for in-person workshops and tutorials in New Zealand.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>  
+        
+        <hr class="divider-d">
+        <footer class="footer bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <p class="copyright font-alt">DSA, 2021</p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
+    </main>
+    <!--  
+    JavaScripts
+    =============================================
+    -->
+    <script src="assets/lib/wow/dist/wow.js"></script>
+    <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
+    <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
+    <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
+    <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
+    <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
+    <script src="assets/lib/smoothscroll.js"></script>
+    <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
+    <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

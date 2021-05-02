@@ -1,0 +1,60 @@
+FROM rocker/rstudio:4.0.0
+
+#####################################################################
+# System dependencies
+#####################################################################
+
+# install system dependencies
+RUN apt-get update && apt-get install -y libxml2-dev zlib1g-dev libgit2-dev
+
+
+
+#####################################################################
+# AWS 
+#####################################################################
+
+# RUN apt-get update && apt-get install -y libcurl4-openssl-dev libssl-dev python curl
+
+# install AWS CLI
+# WORKDIR /root
+# RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+# RUN unzip awscli-bundle.zip
+# RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+# copy AWS credentials
+# COPY aws /root/.aws
+
+
+
+#####################################################################
+# R packages
+#####################################################################
+
+# copy packrat files
+COPY renv.lock /root/renv.lock
+
+# install packrat
+RUN Rscript -e "install.packages('renv')"
+
+# install R packages
+WORKDIR /root
+RUN Rscript -e "packrat::restore()"
+
+
+
+#####################################################################
+# Project files
+#####################################################################
+
+# copy src files
+# COPY app /root/app
+
+
+
+#####################################################################
+# Container entry point
+#####################################################################
+
+# set entry point
+# EXPOSE 3838
+# CMD ["R", "-e", "shiny::runApp('app', host = '0.0.0.0', port = 3838"]
