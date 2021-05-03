@@ -85,9 +85,13 @@ var waitForFinalEvent = (function () {
             
             if (width < 768) {
               $(explorerSection).height('auto');
-              $('[id^=mode-chart]').height(0.65 * window.innerHeight * 0.2);
-              $('#map-map').height(0.75 * window.innerHeight);
+              $('[id^=mode-chart]').height(550 * 0.2);
+              $('#map-map').height(550);
+              // $('[id^=mode-chart]').height(0.65 * window.innerHeight * 0.2);
+              // $('#map-map').height(0.75 * window.innerHeight);
             } else {
+              $('#map-map').height('100%');
+              $('[id^=mode-chart]').height('calc((100% - 50px) * 0.2 )');
               buildHomeSection(explorerSection);
             }
             
