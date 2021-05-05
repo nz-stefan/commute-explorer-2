@@ -40,17 +40,23 @@ mod_commute_mode <- function(id, state) {
 
     # Chart data --------------------------------------------------------------
 
+    d_commute <- reactive({
+      req(state$region)
+      D_COMMUTE %>% 
+        filter(commute_from_region == state$region | commute_to_region == state$region)
+    })
+    
     # aggregated commute numbers by home or work SA  
     d_aggregated_area <- reactive({
       req(state$direction)
       
       if (state$direction == "depart") {
         d <- 
-          D_COMMUTE %>%
+          d_commute() %>%
           select(-starts_with("commute_from"), -starts_with("commute_to"), area = commute_from_code)
       } else {
         d <- 
-          D_COMMUTE %>%
+          d_commute() %>%
           select(-starts_with("commute_from"), -starts_with("commute_to"), area = commute_to_code)
       }
       
@@ -148,6 +154,7 @@ mod_commute_mode <- function(id, state) {
     make_chart <- function(d, selected_val, bar_color, bar_highlight_color, chart_title) {
       
       if (!is.null(selected_val)) {
+        chart_title <- paste0("", round(selected_val * 100), "% ", chart_title)
         p <- 
           d %>% 
           mutate(

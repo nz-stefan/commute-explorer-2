@@ -48,7 +48,7 @@ data_model <- readRDS(F_DATA_MODEL)
 
 # extract model components
 SF_SHAPE <- data_model$shape
-D_COMMUTE <- data_model$d_commute
+D_COMMUTE <- data_model$d_commute %>% mutate(across(c(commute_from_code, commute_to_code), as.character))
 D_LOOKUP <- data_model$d_lookup
 MAP_SRC <- as_mapbox_source(SF_SHAPE)
 

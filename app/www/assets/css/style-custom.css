@@ -68,39 +68,38 @@
     font-family: "Roboto Condensed";
 }
 
-
-/** Appearance of data tables ************************************************/
-
-.dataTables_paginate {
-  font-size: 0.85em;
+.btn {
+  /* border-radius: 0; */
+  font-family: "Roboto Condensed", sans-serif;
+  text-transform: uppercase;
+  /* letter-spacing: 2px; */
+  font-size: 11px;
+  /* padding: 8px 37px; */
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  background-color: #242424;
+  color: #f6f6f6;
+  border: 1px solid transparent;
+  padding: 6px;
+  /* font-size: 14px; */
+  line-height: 1.42857143;
+  border-radius: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 
-/** Seet alert modal adjustments *********************************************/
-
-.swal-modal {
-    width: 478px;
-    opacity: 0;
-    pointer-events: none;
-    background-color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    position: static;
-    margin: 100px auto 20px auto;  /* This shifts the modal box down by 100px to not make it overlap with the menu */
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-transform-origin: 50% 50%;
-    transform-origin: 50% 50%;
-    z-index: 10001;
-    transition: opacity .2s,-webkit-transform .3s;
-    transition: transform .3s,opacity .2s;
-    transition: transform .3s,opacity .2s,-webkit-transform .3s;
-}
-
-
-/* Boostrap adjustments *************************************************************/
+/* Boostrap adjustments ******************************************************/
 
 .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
     position: relative;
@@ -111,64 +110,38 @@
 }
 
 
-/* Simple Infobox *******************************************************************/
+/** Mapbox tooltip adjustment ************************************************/
 
-.simple-infobox-orange {
-  background-color: #ca8102;
+/*
+.mapboxgl-popup-tip {
+  border: 5px solid transparent;
+  border-top-color: #fff;
+  border-bottom: none;
 }
+*/
 
-.simple-infobox-green {
-  background-color: #adb514;
-}
-
-.simple-infobox-purple {
-  background-color: #5a1a8e;
-}
-
-.simple-infobox-blue {
-  background-color: #0187bc;
-}
-
-.simple-infobox-red {
-  background-color: #9f2304;
-}
-
-.simple-infobox-default {
-  text-align: center;
-  border-radius: 3px;
-  margin: 5px 0;
-}
-
-.simple-infobox-value {
-  color: #e6e6e6;
-  font-weight: bold;
-  font-size: 12pt;
-  font-family: "Roboto Condensed";
-}
-
-.simple-infobox-title {
-  font-size: 11px;
-  color: #e6e6e6;
-  margin-top: -5px;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-family: "Roboto Condensed";
+.mapboxgl-popup-content {
+  border-radius: 0 !important;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.5) !important;
+  background-color: #191a1ac7 !important;
 }
 
 
-/** Misc ********************************************************/
 
-/* remove blue focus outline border of map */
-canvas:focus {
-  outline: none;
+.mapboxgl-popup {
+  transform:none !important;
+  top: 41px !important;
+  left: 0 !important;
 }
 
-.explorer-section {
-  position: relative;
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: center center;
-  width: 100%;
-  z-index: 0;
-  background-size: cover;
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-center .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip, 
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+  display:none !important;
 }

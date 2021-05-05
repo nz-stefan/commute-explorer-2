@@ -26,20 +26,35 @@ mod_commute_map <- function(id, state) {
   server <- function(input, output, session) {
     ns <- session$ns
     
+    # Shape data --------------------------------------------------------------
+
+    observeEvent(state$region, {
+      sf_shape <- SF_SHAPE %>% filter(regc2020_name == state$region)
+
+      mapboxer_proxy(ns("map")) %>%
+        set_data(data = sf_shape, source_id = "mb") %>%
+        fit_bounds(sf::st_bbox(sf_shape)) %>%
+        update_mapboxer()
+    })
+    
+    
     # Map ---------------------------------------------------------------------
     
-    tooltip_mb <- "<div style='color:black'>{{SA22018__1}}</div>"
-    tooltip_selected_mb <- "<div style='color:black; font-weight: bold'>{{SA22018__1}}</div>"
-    tooltip_highlighted_bucket <- "<div style='color:black'>Something about {{SA22018__1}}</div>"
-    tooltip_highlighted_mb <- "<div style='color:black'><div style='font-weight: bold'>{{SA22018__1}}</div><div style='white-space:nowrap'>{{commute_all}} commuters {{direction}} <strong>{{name}}</strong></div></div>"
+    tooltip_mb <- "<div>{{SA22018__1}}</div>"
+    tooltip_selected_mb <- "<div><div style='font-weight: bold'>{{SA22018__1}}</div><div style='white-space:nowrap'>{{commute_all}} residents work in <strong>{{name}}</strong></div></div>"
+    tooltip_highlighted_bucket <- "<div style='font-weight: bold;'>{{SA22018__1}}</div>"
+    tooltip_highlighted_mb <- "<div><div style='font-size: 16px'><strong>{{commute_all}}</strong> commuters</div><div>{{direction}} <strong>{{SA22018__1}}</strong></div></div>"
+    # tooltip_highlighted_mb <- "<div><div style='font-weight: bold'>{{SA22018__1}}</div><div style='font-size: 16px;padding-top:10px'><strong>{{commute_all}}</strong> commuters</div><div>{{direction}} <strong style='color:#fd9f02; filter: brightness(85%);'>{{name}}</strong></div></div>"
     
     output$map <- renderMapboxer({
-      MAP_SRC %>% 
+      sf_shape <- SF_SHAPE %>% filter(regc2020_name == "Auckland Region")
+      
+      # as_mapbox_source(sf_shape) %>% 
         mapboxer(
           style = "mapbox://styles/mapbox/dark-v9",
-          token = MAPBOX_TOKEN,
-          center = c(174.763336, -36.848461),
-          zoom = 10
+          token = MAPBOX_TOKEN
+          # center = c(174.763336, -36.848461),
+          # zoom = 10
         ) %>% 
         
         # map overlay shown when mb was clicked on
@@ -65,14 +80,16 @@ mod_commute_map <- function(id, state) {
         # map overlay of all meshblocks
         add_fill_layer(
           fill_color = "rgba(1,1,1,0)", fill_outline_color = "rgba(255,255,255,0.5)", id = "mb", 
-          fill_sort_key = 1
+          fill_sort_key = 1, source = as_mapbox_source(sf_shape)
         ) %>% 
         
         # add tooltips for all layers
         add_tooltips(layer_id = "mb", tooltip = tooltip_mb) %>% 
         add_tooltips(layer_id = "highlight-mb", tooltip = tooltip_highlighted_mb) %>% 
         add_tooltips(layer_id = "highlight-bucket", tooltip = tooltip_highlighted_bucket) %>% 
-        add_tooltips(layer_id = "selected-mb", tooltip = tooltip_selected_mb)
+        add_tooltips(layer_id = "selected-mb", tooltip = tooltip_selected_mb) %>% 
+        
+        fit_bounds(sf::st_bbox(sf_shape))
     })
     
     
@@ -145,21 +162,26 @@ mod_commute_map <- function(id, state) {
       sf_shape_subset <- SF_SHAPE %>% 
         inner_join(
           d_highlighted_mb() %>% 
-            filter(code != selected_mb) %>%     # remove the selected mb, we render it in a separate map layer
             inner_join(D_LOOKUP %>% mutate(id = as.character(id)), by = c(selected_mb = "id")) %>% 
             transmute(
+              selected_mb = selected_mb,
               code = as.character(code), 
               color = pal(highlight_val),
               commute_all = commute_all,
-              direction = if (state$direction == "depart") "from" else "into",
+              direction = if (state$direction == "depart") "Into" else "From",
               name = name
             ),
           by = c("SA22018_V1" = "code")
         )
       
       # retrieve the shape of the selected meshblock
-      sf_selected_mb <- SF_SHAPE %>% 
+      sf_selected_mb <- sf_shape_subset %>% 
         filter(SA22018_V1 == d_highlighted_mb()$selected_mb[1])
+      
+      # remove the selected mb, we render it in a separate map layer
+      sf_shape_subset <- 
+        sf_shape_subset %>% 
+        filter(SA22018_V1 != selected_mb)
 
       # push new data into the `highlight-mb` map layer
       # NOTE: we need to use `ns()` to retrieve the correct map object
@@ -179,8 +201,8 @@ mod_commute_map <- function(id, state) {
       
       area_name <- D_LOOKUP %>% filter(id == state$state$store$selected_mb) %>% pull(name)
       absolutePanel(
-        h4(area_name, style = "text-transform: uppercase; font-weight: bold; font-size: 12px;"),
-        top = 0, left = 0, width = 400, height = 40, style = "background-color: #191a1ac7; padding: 0 5px 0 15px; border-bottom-right-radius: 5px;"
+        h4(area_name, style = paste0("text-transform: uppercase; font-weight: bold; font-size: 14px; color: ", COLOR_ORANGE)),
+        top = 0, left = 0, width = "100%", height = 42, style = "background-color: #191a1ac7; padding: 0 5px 0 15px;"
       )
     })
     
