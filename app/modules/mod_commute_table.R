@@ -25,7 +25,7 @@ mod_commute_table_ui <- function(id) {
       left_ui_width = 10
     ),
     div(
-      style = "margin: 5px -5px 0 -5px; height: calc(100% - 25px)", 
+      style = "margin: 5px -5px 0 -5px; height: calc(100% - 30px)", 
       reactableOutput(ns("table"), height = "100%")
     )
   )

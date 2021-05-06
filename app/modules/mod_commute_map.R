@@ -82,7 +82,7 @@ mod_commute_map <- function(id, state) {
         
         # map overlay of all meshblocks
         add_fill_layer(
-          fill_color = "rgba(1,1,1,0)", fill_outline_color = "rgba(255,255,255,0.5)", id = "mb", 
+          fill_color = "rgba(255,255,255,0.1)", fill_outline_color = "rgba(255,255,255,0.5)", id = "mb", 
           fill_sort_key = 1, source = as_mapbox_source(sf_shape)
         ) %>% 
         
