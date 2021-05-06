@@ -15,7 +15,7 @@ server <- function(input, output, session) {
       store = list()
     ),
     direction = INITIAL_DIRECTION,
-    region = NULL,
+    region = "Auckland Region",
     window_height = 800
   )
   

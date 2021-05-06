@@ -48,7 +48,7 @@ mod_commute_mode <- function(id, state) {
     
     # aggregated commute numbers by home or work SA  
     d_aggregated_area <- reactive({
-      req(state$direction)
+      req(state$direction, d_commute())
       
       if (state$direction == "depart") {
         d <- 
@@ -103,7 +103,6 @@ mod_commute_mode <- function(id, state) {
           filter(area == state$state$store$selected_mb) %>% 
           select(area, var, ratios) %>% 
           spread(var, ratios)
-        print(d)
 
         if (nrow(d) == 0) d <- NULL
         
@@ -120,11 +119,12 @@ mod_commute_mode <- function(id, state) {
 
     output$headline <- renderUI({
       if (state$state$id == STATE_NOTHING_SELECTED) {
-        h5("All Regions", class = "tile-subheadline")
+        h5(state$region, class = "tile-subheadline")
       } else if (state$state$id == STATE_MB_SELECTED) {
-        h5("Selected Region", class = "tile-subheadline")
+        area_name <- D_LOOKUP %>% filter(id == state$state$store$selected_mb) %>% pull(name)
+        h5(area_name, class = "tile-subheadline")
       } else if (state$state$id == STATE_BUCKET_SELECTED) {
-        h5("Selected Bucket", class = "tile-subheadline")
+        h5(state$region, class = "tile-subheadline")
       }
     })
     

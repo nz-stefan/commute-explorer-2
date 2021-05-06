@@ -52,6 +52,10 @@ mod_commute_filter <- function(id, state) {
     
     observeEvent(input$region, {
       state$region <- input$region
+      state$state <- list(
+        id = STATE_NOTHING_SELECTED, 
+        store = list()
+      )
     })
   }
   

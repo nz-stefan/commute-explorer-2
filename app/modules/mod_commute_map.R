@@ -29,6 +29,7 @@ mod_commute_map <- function(id, state) {
     # Shape data --------------------------------------------------------------
 
     observeEvent(state$region, {
+      req(map_rendered())
       sf_shape <- SF_SHAPE %>% filter(regc2020_name == state$region)
 
       mapboxer_proxy(ns("map")) %>%
@@ -46,8 +47,10 @@ mod_commute_map <- function(id, state) {
     tooltip_highlighted_mb <- "<div><div style='font-size: 16px'><strong>{{commute_all}}</strong> commuters</div><div>{{direction}} <strong>{{SA22018__1}}</strong></div></div>"
     # tooltip_highlighted_mb <- "<div><div style='font-weight: bold'>{{SA22018__1}}</div><div style='font-size: 16px;padding-top:10px'><strong>{{commute_all}}</strong> commuters</div><div>{{direction}} <strong style='color:#fd9f02; filter: brightness(85%);'>{{name}}</strong></div></div>"
     
+    map_rendered <- reactiveVal(FALSE)
     output$map <- renderMapboxer({
       sf_shape <- SF_SHAPE %>% filter(regc2020_name == "Auckland Region")
+      map_rendered(TRUE)
       
       # as_mapbox_source(sf_shape) %>% 
         mapboxer(
@@ -86,7 +89,7 @@ mod_commute_map <- function(id, state) {
         # add tooltips for all layers
         add_tooltips(layer_id = "mb", tooltip = tooltip_mb) %>% 
         add_tooltips(layer_id = "highlight-mb", tooltip = tooltip_highlighted_mb) %>% 
-        add_tooltips(layer_id = "highlight-bucket", tooltip = tooltip_highlighted_bucket) %>% 
+        # add_tooltips(layer_id = "highlight-bucket", tooltip = tooltip_highlighted_bucket) %>% 
         add_tooltips(layer_id = "selected-mb", tooltip = tooltip_selected_mb) %>% 
         
         fit_bounds(sf::st_bbox(sf_shape))
@@ -192,17 +195,51 @@ mod_commute_map <- function(id, state) {
         update_mapboxer()
     })
     
+    # delete all map highlight if the app state changes to STATE_NOTHING_SELECTED 
+    observeEvent(state$state, {
+      req(state$state$id == STATE_NOTHING_SELECTED)
+      mapboxer_proxy(ns("map")) %>%
+        set_data(data = SF_SHAPE[0,], source_id = "highlight-mb") %>%
+        set_data(data = SF_SHAPE[0,], source_id = "selected-mb") %>% 
+        set_data(data = SF_SHAPE[0,], source_id = "highlight-bucket") %>%
+        update_mapboxer()
+    })
+    
 
     # Selected area panel -----------------------------------------------------
 
     output$selected_area <- renderUI({
-      # only highlight map if app is in STATE_MB_SELECTED 
-      req(state$state$id == STATE_MB_SELECTED, state$direction)
+      req(state$state$id %in% c(STATE_MB_SELECTED, STATE_BUCKET_SELECTED), state$direction)
       
-      area_name <- D_LOOKUP %>% filter(id == state$state$store$selected_mb) %>% pull(name)
+      if (state$state$id == STATE_MB_SELECTED) {
+        area_name <- D_LOOKUP %>% filter(id == state$state$store$selected_mb) %>% pull(name)
+        ui <- h4(area_name, class = "map-headline")
+      } else if (state$state$id == STATE_BUCKET_SELECTED) {
+        # build the ratio text snippet for the headline
+        ratio <- state$state$store$selected_ratio * 100
+        ratio_label <- sprintf("%s &ndash; %s%%", ratio - 2.5, ratio + 2.5)
+        
+        # build the mode of travel text snippet
+        mode <- switch(
+          state$state$store$selected_mode,
+          "work_at_home" = "Work at Home", 
+          "commute_car" = "Commute By Car", 
+          "commute_public" = "Commute by Public Transport", 
+          "commute_bicycle" = "Commute by Bike", 
+          "commute_walk_or_jog" = "Walk or Jog"
+        )
+        
+        # combine everything into a headline
+        ui <- h4(HTML(
+          paste(ratio_label, tags$span(mode, style = "color:white;font-size:10px;padding-left:5px"))), 
+          class = "map-headline", style = "font-size: 16px"
+        )
+      }
+      
       absolutePanel(
-        h4(area_name, style = paste0("text-transform: uppercase; font-weight: bold; font-size: 14px; color: ", COLOR_ORANGE)),
-        top = 0, left = 0, width = "100%", height = 42, style = "background-color: #191a1ac7; padding: 0 5px 0 15px;"
+        ui,
+        top = 0, left = 0, width = "100%", height = 42, 
+        style = "background-color: #191a1ac7; padding: 0 5px 0 15px;"
       )
     })
     

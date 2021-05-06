@@ -145,3 +145,14 @@
 .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
   display:none !important;
 }
+
+.map-headline {
+  text-transform: uppercase; 
+  font-weight: bold; 
+  font-size: 14px; 
+  color: #fd9f02;
+}
+
+*:focus {
+  outline: none;
+}
