@@ -36,9 +36,9 @@ COLOR_ORANGE <- "#fd9f02"
 COLOR_PINK <- "#ce2c78"
 COLOR_RED <- "#d32d05"
 COLOR_PURPLE <- "#7522b8"
-COLOR_GREY <- "#888892"
-COLOR_DARK_GREY <- "#333339"
-COLOR_WHITE <- "#ddd"
+COLOR_GREY <- "#bbb"
+COLOR_DARK_GREY <- "#444"
+COLOR_WHITE <- "#eee"
 
 
 # Data --------------------------------------------------------------------
@@ -48,8 +48,9 @@ data_model <- readRDS(F_DATA_MODEL)
 
 # extract model components
 SF_SHAPE <- data_model$shape
-D_COMMUTE <- data_model$d_commute %>% mutate(across(c(commute_from_code, commute_to_code), as.character))
+D_COMMUTE <- data_model$d_commute
 D_LOOKUP <- data_model$d_lookup
+D_LOOKUP_REGION <- data_model$d_lookup_region
 MAP_SRC <- as_mapbox_source(SF_SHAPE)
 
 
@@ -66,7 +67,7 @@ STATE_BUCKET_SELECTED <- 3
 
 # initial state values
 INITIAL_DIRECTION <- "depart"
-
+INITIAL_REGION <- "Auckland Region"
 
 
 # Utilities ---------------------------------------------------------------

@@ -90,7 +90,8 @@ d_commute_clean <-
     commute_public,
     commute_other = other, 
     commute_all
-  )
+  ) %>% 
+  mutate(across(c(commute_from_code, commute_to_code), as.character))
 
 
 # area_code - name lookup ------------------------------------------------------
@@ -99,6 +100,13 @@ d_lookup <-
   bind_rows(
     select(d_commute_clean, id = commute_from_code, name = commute_from),
     select(d_commute_clean, id = commute_to_code, name = commute_to)
+  ) %>% 
+  distinct()
+
+d_lookup_region <- 
+  bind_rows(
+    select(d_commute_clean, name = commute_from, code = commute_from_code, region = commute_from_region),
+    select(d_commute_clean, name = commute_to, code = commute_to_code, region = commute_to_region)
   ) %>% 
   distinct()
 
@@ -129,7 +137,8 @@ loginfo("Shapefile reduced size %.1f mb", size_after / 2^20)
 data_model <- list(
   shapes = sh_sa_simple_nowater,
   d_commute = d_commute_clean,
-  d_lookup = d_lookup
+  d_lookup = d_lookup,
+  d_lookup_region = d_lookup_region
 )
 
 saveRDS(data_model, file = F_DATA_MODEL)

@@ -26,9 +26,8 @@ mod_commute_table_ui <- function(id) {
       ),
       column(
         width = 4,
-        style = "margin: 25px 0 0 0; font-size: 16px; text-align: right;",
-        actionLink(ns("center_view"), label = " ", icon = icon("eye")),
-        actionLink(ns("clear_selection"), label = " ", icon = icon("home"))
+        style = "margin: 25px 0 0 0; font-size: 14px; text-align: right;",
+        actionLink(ns("center_view"), label = " ", icon = icon("eye-open", lib = "glyphicon"))
       ),
       column(
         width = 12,
@@ -36,7 +35,7 @@ mod_commute_table_ui <- function(id) {
         selectizeInput(
           ns("area"), 
           label = NULL, 
-          choices = "", multiple = FALSE, selected = "",
+          choices = "", multiple = FALSE, selected = character(0),
           width = "100%", options = list(allowEmptyOption = FALSE, placeholder = "SEARCH..."))
       )
     ),
@@ -76,69 +75,80 @@ mod_commute_table <- function(id, state) {
       state$direction <- input$direction
     })
     
+    # reactive to store choices of the area input field
     area_choices <- reactive({
-      req(state$region, state$direction)
+      req(state$region)
       
-      if (state$direction == "depart") {
-        d <- D_COMMUTE %>% 
-          select(name = commute_from, code = commute_from_code, region = commute_from_region)
-      } else {
-        d <- D_COMMUTE %>% 
-          select(name = commute_to, code = commute_to_code, region = commute_to_region)
-      }
-      
-      d <- d %>% filter(region == state$region) %>% arrange(name)
-      c("SEARCH..." = "no-selection", setNames(d$code, d$name))
+      d <- D_LOOKUP_REGION %>% filter(region == state$region) %>% arrange(name)
+      setNames(d$code, d$name)
     })
-    
+
+    # populate the selectizeInput choices
     observe({
       req(area_choices())
       current_selected <- isolate(input$area)
       updateSelectizeInput(session, "area", choices = area_choices(), selected = current_selected, server = TRUE)
     })
-    
-    # observe({
-    #   req(input$area == "", state$state$id == STATE_MB_SELECTED)
-    #   print(paste("inside", isolate(input$area)))
-    # 
-    #   # no area selected -> switch to STATE_NOTHING_SELECTED 
-    #   # state$state <- list(
-    #   #   id = STATE_NOTHING_SELECTED, 
-    #   #   store = list()
-    #   # )
-    # })
-    
-    # change the app state if a new area was selected through selectizeInput
+
+    # To change the app state based on the area input we need to respond to two events:
+    #   1. A new area was selected -> change app state to STATE_MB_SELECTED
+    #   2. The area input field was deleted -> change app state to STATE_NOTHING_SELECTED
+
+    # change the app state if a new area was selected through selectizeInput (Option 1 above)
     observeEvent(input$area, {
       req(input$area)
-
-      if (input$area == "no-selection") {
-        # no area selected -> switch to STATE_NOTHING_SELECTED
-        state$state <- list(
-          id = STATE_NOTHING_SELECTED,
-          store = list()
-        )
-      } else {
-        # area was selected -> switch to STATE_MB_SELECTED
-        state$state <- list(
-          id = STATE_MB_SELECTED, 
-          store = list(selected_mb = input$area)
-        )
-      }
+      print(paste("observeEvent input$area", input$area))
+      
+      # area was selected -> switch to STATE_MB_SELECTED
+      state$state <- list(
+        id = STATE_MB_SELECTED, 
+        store = list(selected_mb = input$area, event_source = "search")
+      )
     })
     
-    # observe the app state and update the selectizeInput as required
+    # change the app state if the area input is empty (Option 2 above)
+    observeEvent(input$area, {
+      # we only respond to events that originated through the area input field
+      # events from other sources, e.g. map clicks, are ignored, otherwise we cause reactive loops
+      req(input$area == "", state$state$id != STATE_NOTHING_SELECTED, state$state$store$event_source == "search")
+      print(paste("observeEvent:", input$area))
+
+      # no area selected -> switch to STATE_NOTHING_SELECTED
+      state$state <- list(
+        id = STATE_NOTHING_SELECTED,
+        store = list(event_source = "search")
+      )
+    })
+    
+    # Update the area input field if the app state changes through other sources (e.g. map clicks)
     observeEvent(state$state, {
-      selected <- NULL
+      # we only listen to app state events that did not originate from the input field
+      # otherwise we cause reactive loops
+      req(state$state$store$event_source != "search")
+      
       if (state$state$id == STATE_MB_SELECTED) {
         selected <- state$state$store$selected_mb
-      } else if (state$state$id == STATE_NOTHING_SELECTED) {
-        selected <- "no-selection"
-      } else {
-        return()
+      } else if (state$state$id %in% c(STATE_NOTHING_SELECTED, STATE_BUCKET_SELECTED)) {
+        selected <- character(0)
       }
-      print(paste("here:", selected))
+      
+      print(paste("observeEvent state$state:", selected))
       updateSelectizeInput(session, "area", choices = area_choices(), selected = selected, server = TRUE)
+    })
+    
+    
+    # Center view button ------------------------------------------------------
+
+    observeEvent(input$center_view, {
+      req(state$map_id)
+      
+      if (state$state$id == STATE_MB_SELECTED) {
+        bbox <- SF_SHAPE %>% 
+          filter(SA22018_V1 == state$state$store$selected_mb) %>% 
+          sf::st_bbox()
+        mapboxer_proxy(state$map_id) %>% fit_bounds(bbox, maxZoom = 12) %>% update_mapboxer()
+      }
+      
     })
     
 
@@ -193,17 +203,18 @@ mod_commute_table <- function(id, state) {
     
 
     # Table data --------------------------------------------------------------
-    
+
     d_table <- reactive({
-      req(state$state, state$direction)
+      req(state$d_commute, state$state, state$direction)
       
       if (state$state$id == STATE_NOTHING_SELECTED) {
-        agg_departure_arrival_summary(state$direction)
+        agg_departure_arrival_summary(state$d_commute, state$direction)
       } else if (state$state$id == STATE_MB_SELECTED) {
         # identify the IDs of shapes to highlight
-        extract_mb(state$state$store$selected_mb, state$direction)
+        extract_mb(state$d_commute, state$state$store$selected_mb, state$direction)
       } else if (state$state$id == STATE_BUCKET_SELECTED) {
-        agg_departure_arrival_summary(state$direction) %>% 
+        state$d_commute %>% 
+          agg_departure_arrival_summary(state$direction) %>% 
           inner_join(state$state$store$d_areas, by = c("code" = "area"))
       }
     })
@@ -230,7 +241,7 @@ mod_commute_table <- function(id, state) {
     footer <- function(values) format(sum(values, na.rm = TRUE), big.mark = ",")
     
     output$table <- renderReactable({
-      req(state$window_height)
+      req(d_table(), state$window_height)
 
       if (input$percent) {
         d <- d_table() %>% 
@@ -285,7 +296,7 @@ mod_commute_table <- function(id, state) {
       # change the app state
       state$state <- list(
         id = STATE_MB_SELECTED, 
-        store = list(selected_mb = selected_row$code)
+        store = list(selected_mb = selected_row$code, event_source = "table")
       )
     })
     

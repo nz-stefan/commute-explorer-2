@@ -13,8 +13,8 @@ mod_commute_map_ui <- function(id) {
   ns <- NS(id)
   
   tagList(
-    mapboxerOutput(ns("map"), height = "100%"),
-    uiOutput(ns("selected_area"))
+    mapboxerOutput(ns("map"), height = "100%")
+    # uiOutput(ns("selected_area"))
   )
 }
 
@@ -49,18 +49,13 @@ mod_commute_map <- function(id, state) {
     
     map_rendered <- reactiveVal(FALSE)
     output$map <- renderMapboxer({
-      sf_shape <- SF_SHAPE %>% filter(regc2020_name == "Auckland Region")
+      sf_shape <- SF_SHAPE %>% filter(regc2020_name == INITIAL_REGION)
+      state$map_id <- ns("map")
       map_rendered(TRUE)
       
-      # as_mapbox_source(sf_shape) %>% 
-        mapboxer(
-          style = "mapbox://styles/mapbox/dark-v9",
-          token = MAPBOX_TOKEN
-          # center = c(174.763336, -36.848461),
-          # zoom = 10
-        ) %>% 
+      mapboxer(style = "mapbox://styles/mapbox/dark-v9", token = MAPBOX_TOKEN) %>% 
         
-        # map overlay shown when mb was clicked on
+        # meshblock highlights
         add_fill_layer(
           fill_color = c("get", "color"), fill_opacity = 0.5, id = "highlight-mb", 
           source = as_mapbox_source(SF_SHAPE[0,] %>% mutate(color = "#000000")),
@@ -105,7 +100,7 @@ mod_commute_map <- function(id, state) {
       # change the app state
       state$state <- list(
         id = STATE_MB_SELECTED, 
-        store = list(selected_mb = selected_mb)
+        store = list(selected_mb = selected_mb, event_source = "map")
       )
     })
     
@@ -116,7 +111,7 @@ mod_commute_map <- function(id, state) {
     d_highlighted_mb <- reactive({
       req(state$state$id == STATE_MB_SELECTED)
 
-      extract_mb(state$state$store$selected_mb, state$direction) %>% 
+      extract_mb(state$d_commute, state$state$store$selected_mb, state$direction) %>% 
         mutate(
           highlight_val = commute_all, 
           selected_mb = state$state$store$selected_mb
@@ -127,7 +122,7 @@ mod_commute_map <- function(id, state) {
     d_highlighted_bucket <- reactive({
       req(state$state$id == STATE_BUCKET_SELECTED)
       
-      agg_departure_arrival_summary(state$direction) %>% 
+      agg_departure_arrival_summary(state$d_commute, state$direction) %>% 
         inner_join(state$state$store$d_areas, by = c("code" = "area")) %>% 
         mutate(highlight_val = .[[state$state$store$selected_mode]])
     })
@@ -149,6 +144,8 @@ mod_commute_map <- function(id, state) {
         set_data(data = sf_shape_subset, source_id = "highlight-bucket") %>%
         set_data(data = SF_SHAPE[0,], source_id = "selected-mb") %>%
         set_data(data = SF_SHAPE[0,], source_id = "highlight-mb") %>%
+        
+        fit_bounds(st_bbox(sf_shape_subset), maxZoom = 12) %>% 
         update_mapboxer()
     })
     
@@ -185,13 +182,15 @@ mod_commute_map <- function(id, state) {
       sf_shape_subset <- 
         sf_shape_subset %>% 
         filter(SA22018_V1 != selected_mb)
-
+      
       # push new data into the `highlight-mb` map layer
       # NOTE: we need to use `ns()` to retrieve the correct map object
       mapboxer_proxy(ns("map")) %>%
         set_data(data = sf_shape_subset, source_id = "highlight-mb") %>%
         set_data(data = sf_selected_mb, source_id = "selected-mb") %>% 
         set_data(data = SF_SHAPE[0,], source_id = "highlight-bucket") %>%
+        
+        fit_bounds(st_bbox(sf_shape_subset), maxZoom = 12) %>% 
         update_mapboxer()
     })
     

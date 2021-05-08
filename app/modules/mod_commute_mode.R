@@ -40,23 +40,17 @@ mod_commute_mode <- function(id, state) {
 
     # Chart data --------------------------------------------------------------
 
-    d_commute <- reactive({
-      req(state$region)
-      D_COMMUTE %>% 
-        filter(commute_from_region == state$region | commute_to_region == state$region)
-    })
-    
     # aggregated commute numbers by home or work SA  
     d_aggregated_area <- reactive({
-      req(state$direction, d_commute())
+      req(state$direction, state$d_commute)
       
       if (state$direction == "depart") {
         d <- 
-          d_commute() %>%
+          state$d_commute %>%
           select(-starts_with("commute_from"), -starts_with("commute_to"), area = commute_from_code)
       } else {
         d <- 
-          d_commute() %>%
+          state$d_commute %>%
           select(-starts_with("commute_from"), -starts_with("commute_to"), area = commute_to_code)
       }
       
@@ -273,7 +267,7 @@ mod_commute_mode <- function(id, state) {
         # change the app state
         state$state <- list(
           id = STATE_BUCKET_SELECTED, 
-          store = list(selected_mode = mode_id, selected_ratio = selected_ratio, d_areas = d_areas)
+          store = list(selected_mode = mode_id, selected_ratio = selected_ratio, d_areas = d_areas, event_source = "chart")
         )
       })
     })
