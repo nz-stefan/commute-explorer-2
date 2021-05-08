@@ -17,18 +17,18 @@ mod_commute_filter_ui <- function(id) {
       style = "float: right",
       pickerInput(ns("region"), label = NULL, choices = NULL, width = "200px")
     ),
-    div(
-      style = "clear: both; text-align: right",
-      prettyRadioButtons(
-        inputId = ns("direction"),
-        choices = c(DEPART = "depart", ARRIVE = "arrive"),
-        selected = INITIAL_DIRECTION,
-        label = NULL,
-        width = "auto",
-        animation = "jelly",
-        inline = TRUE
-      )
-    ),
+    # div(
+    #   style = "clear: both; text-align: right",
+    #   prettyRadioButtons(
+    #     inputId = ns("direction"),
+    #     choices = c(DEPART = "depart", ARRIVE = "arrive"),
+    #     selected = INITIAL_DIRECTION,
+    #     label = NULL,
+    #     width = "auto",
+    #     animation = "jelly",
+    #     inline = TRUE
+    #   )
+    # ),
     top = "0", right = "0", width = "100%",
     style = "padding: 0 7px 0 20px; margin-top: -15px;"
   )
@@ -40,9 +40,9 @@ mod_commute_filter_ui <- function(id) {
 
 mod_commute_filter <- function(id, state) {
   server <- function(input, output, session) {
-    observeEvent(input$direction, {
-      state$direction <- input$direction
-    })
+    # observeEvent(input$direction, {
+    #   state$direction <- input$direction
+    # })
     
     observe({
       req(D_COMMUTE)

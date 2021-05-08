@@ -156,3 +156,67 @@
 *:focus {
   outline: none;
 }
+
+
+/** Selectize adjustments ******************************************************/
+
+.selectize-input, .selectize-control.single .selectize-input.input-active {
+    background: #242424;
+    cursor: text;
+    display: inline-block;
+}
+
+.selectize-input {
+    border: none;
+    padding: 6px 12px;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.selectize-dropdown, .selectize-input, .selectize-input input {
+    color: #fdfdfd;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 20px;
+    -webkit-font-smoothing: inherit;
+}
+
+.selectize-input.full {
+    background-color: #242424;
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+    height: auto;
+    color: black;
+    padding: 0;
+    margin: 2px 0 0 0;
+    z-index: 1000;
+    background: #f2f2f2;
+    /* border: 1px solid #cccccc; */
+    /* border: 1px solid rgba(0, 0, 0, 0.15); */
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.selectize-dropdown .active {
+    background-color: #337ab7;
+    color: #f2f2f2;
+}
+
+.action-button {
+    color: #f2f2f2;
+}
