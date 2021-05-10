@@ -290,7 +290,17 @@ position: absolute;
 
 .chart-title {
   position: absolute; 
-  top: 5px; 
+  top: 0; 
   right: 0;
   font-family: "Roboto Condensed", sans-serif;
+}
+
+.chart-title strong {
+  font-size: 18px;
+  color: #fd9f02;
+}
+
+.chart-title em {
+  padding: 0 2px 0 0;
+  color: #fd9f02;
 }

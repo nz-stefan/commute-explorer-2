@@ -68,7 +68,7 @@ STATE_BUCKET_SELECTED <- 3
 # initial state values
 INITIAL_DIRECTION <- "depart"
 INITIAL_REGION <- "Auckland Region"
-
+INITIAL_DATA_SOURCE <- "work"
 
 # Utilities ---------------------------------------------------------------
 

@@ -30,7 +30,13 @@ mod_commute_map <- function(id, state) {
 
     observeEvent(state$region, {
       req(map_rendered())
-      sf_shape <- SF_SHAPE %>% filter(regc2020_name == state$region)
+      
+      # filter shapefile by selected region
+      if (state$region == "All Regions") {
+        sf_shape <- SF_SHAPE %>% filter(regc2020_name != "Area Outside Region")
+      } else {
+        sf_shape <- SF_SHAPE %>% filter(regc2020_name == state$region)
+      }
 
       mapboxer_proxy(ns("map")) %>%
         set_data(data = sf_shape, source_id = "mb") %>%

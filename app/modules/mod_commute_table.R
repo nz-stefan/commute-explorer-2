@@ -26,8 +26,17 @@ mod_commute_table_ui <- function(id) {
       ),
       column(
         width = 4,
-        style = "margin: 25px 0 0 0; font-size: 14px; text-align: right;",
-        actionLink(ns("center_view"), label = " ", icon = icon("eye-open", lib = "glyphicon"))
+        style = "margin: -5px 0 -2px 0; font-size: 14px;",
+        div(
+          style = "float:right",
+          pickerInput(
+            ns("data_source"), 
+            label = NULL, 
+            choices = c(All = "all", Work = "work", Education = "edu"), 
+            multiple  = FALSE, selected = INITIAL_DATA_SOURCE,
+            width = "100px"
+          )
+        )
       ),
       column(
         width = 12,
@@ -43,16 +52,13 @@ mod_commute_table_ui <- function(id) {
       uiOutput(ns("headline")),
       div(
         style = "margin-right: -10px; text-align: right",
-        # pickerInput(ns("data"), label = NULL, choices = c("All", "Work", "Education"), selected = "Work"),
-        div(
-          # style = "display: none",
-          prettyCheckbox(
-            ns("percent"),
-            label = "%",
-            value = FALSE,
-            inline = TRUE,
-            outline = TRUE, shape = "curve", bigger = TRUE
-          )
+        actionLink(ns("center_view"), label = " ", icon = icon("eye-open", lib = "glyphicon")),
+        prettyCheckbox(
+          ns("percent"),
+          label = "%",
+          value = FALSE,
+          inline = TRUE,
+          outline = TRUE, shape = "curve", bigger = TRUE
         )
       ), 
       left_ui_width = 10
@@ -72,6 +78,13 @@ mod_commute_table <- function(id, state) {
   server <- function(input, output, session) {
     ns <- session$ns
 
+
+    # Data selection ----------------------------------------------------------
+
+    observeEvent(input$data_source, {
+      state$data_source <- input$data_source
+    })
+    
 
     # Area selection ----------------------------------------------------------
     

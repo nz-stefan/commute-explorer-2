@@ -15,15 +15,21 @@ server <- function(input, output, session) {
     region = INITIAL_REGION,
     window_height = 800,
     d_commute = NULL,
-    map_id = NULL
+    map_id = NULL,
+    data_source = INITIAL_DATA_SOURCE
   )
   
   # update the app state when the region is selected
-  observeEvent(app_state$region, {
+  observeEvent(c(app_state$region, app_state$data_source), {
     if (app_state$region == "All Regions") {
-      app_state$d_commute <- D_COMMUTE
+      app_state$d_commute <- D_COMMUTE %>% filter(source == app_state$data_source) %>% select(-source)
     } else {
-      app_state$d_commute <- filter(D_COMMUTE, commute_from_region == app_state$region | commute_to_region == app_state$region)
+      app_state$d_commute <- filter(
+        D_COMMUTE, 
+        source == app_state$data_source, 
+        commute_from_region == app_state$region | commute_to_region == app_state$region
+      ) %>% 
+      select(-source)
     }
   }) 
   

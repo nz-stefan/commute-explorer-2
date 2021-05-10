@@ -124,30 +124,45 @@ mod_commute_mode <- function(id, state) {
     
 
     # Chart headlines ---------------------------------------------------------
+    
+    make_headline <- function(mode, title) {
+      snippet <- "<strong>&nbsp;</strong>"
+      
+      if (state$state$id == STATE_MB_SELECTED) {
+        if (state$direction == "depart") {
+          d <- state$d_commute %>% filter(commute_from_code == state$state$store$selected_mb) 
+        } else {
+          d <- state$d_commute %>% filter(commute_to_code == state$state$store$selected_mb) 
+        }
+        nb_commuters <- sum(d[[mode]])
+        snippet <- glue("<strong>{ format(nb_commuters, big.mark=',') }</strong> <em>({ round(d_selected_area()[[mode]] * 100) }%)</em> ")
+      }
+      div(class = "chart-title", HTML(paste(snippet, title)))
+    }
 
     output$chart_title_home <- renderUI({
-      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
-      div(class = "chart-title", "Work at Home")
+      req(state$state)
+      make_headline("work_at_home", "Work at Home")
     })
     
     output$chart_title_car <- renderUI({
-      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
-      div(class = "chart-title", "Commute by Car")
+      req(state$state)
+      make_headline("commute_car", "Commute by Car")
     })
     
     output$chart_title_public <- renderUI({
-      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
-      div(class = "chart-title", "Commute by Public Transport")
+      req(state$state)
+      make_headline("commute_public", "Use Public Transport")
     })
     
     output$chart_title_walk <- renderUI({
-      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
-      div(class = "chart-title", "Walk or Jog")
+      req(state$state)
+      make_headline("commute_walk_or_jog", "Walk or Jog")
     })
     
     output$chart_title_bike <- renderUI({
-      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
-      div(class = "chart-title", "Commute by Bike")
+      req(state$state)
+      make_headline("commute_bicycle", "Commute by Bike")
     })
     
 
@@ -174,7 +189,6 @@ mod_commute_mode <- function(id, state) {
     }
     
     make_chart <- function(d, selected_val, bar_color, bar_highlight_color, chart_title) {
-      
       if (!is.null(selected_val)) {
         p <- 
           d %>% 
@@ -235,7 +249,7 @@ mod_commute_mode <- function(id, state) {
     
     output$chart_work_at_home <- renderEcharts4r({
       req(d_histogram())
-
+      
       cols <- bar_colors("work_at_home")
       d_histogram() %>% 
         filter(var == "work_at_home") %>% 
