@@ -21,11 +21,11 @@ mod_commute_mode_ui <- function(id) {
       NULL,
       left_ui_width = 12
     ),
-    echarts4rOutput(ns("chart_work_at_home"), height = "calc((100% - 50px) * 0.2 )"),
-    echarts4rOutput(ns("chart_commute_car"), height = "calc((100% - 50px) * 0.2 )"),
-    echarts4rOutput(ns("chart_commute_public"), height = "calc((100% - 50px) * 0.2 )"),
-    echarts4rOutput(ns("chart_commute_walk_or_jog"), height = "calc((100% - 50px) * 0.2 )"),
-    echarts4rOutput(ns("chart_commute_bicycle"), height = "calc((100% - 55px) * 0.2 )")
+    div(class = "chart-container-home", uiOutput(ns("chart_title_home")), echarts4rOutput(ns("chart_work_at_home"), height = "100%")),
+    div(class = "chart-container-car", uiOutput(ns("chart_title_car")), echarts4rOutput(ns("chart_commute_car"), height = "100%")),
+    div(class = "chart-container-public", uiOutput(ns("chart_title_public")), echarts4rOutput(ns("chart_commute_public"), height = "100%")),
+    div(class = "chart-container-walk", uiOutput(ns("chart_title_walk")), echarts4rOutput(ns("chart_commute_walk_or_jog"), height = "100%")),
+    div(class = "chart-container-bike", uiOutput(ns("chart_title_bike")), echarts4rOutput(ns("chart_commute_bicycle"), height = "100%"))
   )
 }
 
@@ -123,6 +123,34 @@ mod_commute_mode <- function(id, state) {
     })
     
 
+    # Chart headlines ---------------------------------------------------------
+
+    output$chart_title_home <- renderUI({
+      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
+      div(class = "chart-title", "Work at Home")
+    })
+    
+    output$chart_title_car <- renderUI({
+      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
+      div(class = "chart-title", "Commute by Car")
+    })
+    
+    output$chart_title_public <- renderUI({
+      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
+      div(class = "chart-title", "Commute by Public Transport")
+    })
+    
+    output$chart_title_walk <- renderUI({
+      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
+      div(class = "chart-title", "Walk or Jog")
+    })
+    
+    output$chart_title_bike <- renderUI({
+      # commuter <- paste0(round(d_selected_area()$commute_car * 100), "% ")
+      div(class = "chart-title", "Commute by Bike")
+    })
+    
+
     # Chart helpers -----------------------------------------------------------
 
     histogram_tooltip_js <- function(mode_of_travel, from_to) {
@@ -148,7 +176,6 @@ mod_commute_mode <- function(id, state) {
     make_chart <- function(d, selected_val, bar_color, bar_highlight_color, chart_title) {
       
       if (!is.null(selected_val)) {
-        chart_title <- paste0("", round(selected_val * 100), "% ", chart_title)
         p <- 
           d %>% 
           mutate(
@@ -176,7 +203,7 @@ mod_commute_mode <- function(id, state) {
         e_y_axis(show = FALSE) %>%
         e_x_axis(formatter = e_axis_formatter("percent"), min = 0, max = 1) %>%
         e_grid(top = "25px", left = "10px", right = "20px", bottom = "25px") %>% 
-        e_title(subtext = chart_title, right = "1px", subtextStyle = list(fontFamily = "Roboto Condensed")) %>%
+        # e_title(subtext = chart_title, right = "1px", subtextStyle = list(fontFamily = "Roboto Condensed")) %>%
         e_tooltip(
           trigger = "axis",
           formatter = histogram_tooltip_js(chart_title, state$direction),

@@ -188,7 +188,7 @@
 
 .selectize-dropdown, .selectize-input, .selectize-input input {
     color: #fd9f02;
-    font-family: inherit;
+    font-family: "Roboto Condensed", sans-serif;
     font-size: 12px;
     font-weight: bold;
     line-height: 20px;
@@ -223,4 +223,74 @@
 
 .action-button {
     color: #f2f2f2;
+}
+
+
+/** Chart styles **************************************************************/
+
+.chart-container-home, .chart-container-car, .chart-container-public, .chart-container-walk, .chart-container-bike {
+  position: relative;
+  height: calc((100% - 50px) * 0.2 );
+}
+
+.chart-container-home:before {
+position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 42px;
+  color: rgba(255, 255, 255, 0.1);
+  top: 20px;
+  right: 10px;
+  content: "\f015";
+}
+
+.chart-container-car:before {
+position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 42px;
+  color: rgba(255, 255, 255, 0.1);
+  top: 20px;
+  right: 10px;
+  content: "\f1b9";
+}
+
+.chart-container-public:before {
+position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 42px;
+  color: rgba(255, 255, 255, 0.1);
+  top: 20px;
+  right: 10px;
+  content: "\f238";
+}
+
+.chart-container-walk:before {
+position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 42px;
+  color: rgba(255, 255, 255, 0.1);
+  top: 20px;
+  right: 10px;
+  content: "\f554";
+}
+
+.chart-container-bike:before {
+position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 42px;
+  color: rgba(255, 255, 255, 0.1);
+  top: 20px;
+  right: 10px;
+  content: "\f206";
+}
+
+.chart-title {
+  position: absolute; 
+  top: 5px; 
+  right: 0;
+  font-family: "Roboto Condensed", sans-serif;
 }

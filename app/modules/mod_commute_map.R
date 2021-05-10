@@ -179,6 +179,7 @@ mod_commute_map <- function(id, state) {
         filter(SA22018_V1 == d_highlighted_mb()$selected_mb[1])
       
       # remove the selected mb, we render it in a separate map layer
+      bbox <- st_bbox(sf_shape_subset)
       sf_shape_subset <- 
         sf_shape_subset %>% 
         filter(SA22018_V1 != selected_mb)
@@ -190,7 +191,7 @@ mod_commute_map <- function(id, state) {
         set_data(data = sf_selected_mb, source_id = "selected-mb") %>% 
         set_data(data = SF_SHAPE[0,], source_id = "highlight-bucket") %>%
         
-        fit_bounds(st_bbox(sf_shape_subset), maxZoom = 12) %>% 
+        fit_bounds(bbox, maxZoom = 12) %>% 
         update_mapboxer()
     })
     

@@ -43,12 +43,16 @@ mod_commute_table_ui <- function(id) {
       uiOutput(ns("headline")),
       div(
         style = "margin-right: -10px; text-align: right",
-        prettyCheckbox(
-          ns("percent"),
-          label = "%",
-          value = FALSE,
-          inline = TRUE,
-          outline = TRUE, shape = "curve", bigger = TRUE
+        # pickerInput(ns("data"), label = NULL, choices = c("All", "Work", "Education"), selected = "Work"),
+        div(
+          # style = "display: none",
+          prettyCheckbox(
+            ns("percent"),
+            label = "%",
+            value = FALSE,
+            inline = TRUE,
+            outline = TRUE, shape = "curve", bigger = TRUE
+          )
         )
       ), 
       left_ui_width = 10
