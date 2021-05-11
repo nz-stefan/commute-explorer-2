@@ -11,14 +11,14 @@ mod_commute_table_ui <- function(id) {
   
   tagList(
     fluidRow(
-      style = "margin: -25px -10px 0 -10px",
+      style = "margin: 0px -12px 0 -12px",
       column(
         width = 8,
         prettyRadioButtons(
           inputId = ns("direction"),
           choices = c(FORM = "depart", TO = "arrive"),
           selected = INITIAL_DIRECTION,
-          label = NULL,
+          label = "Toggle Percent View",
           width = "auto",
           animation = "jelly",
           inline = TRUE
@@ -26,7 +26,7 @@ mod_commute_table_ui <- function(id) {
       ),
       column(
         width = 4,
-        style = "margin: -5px 0 -2px 0; font-size: 14px;",
+        style = "margin: -7px 0 0 0; font-size: 14px;",
         div(
           style = "float:right",
           pickerInput(
@@ -40,7 +40,7 @@ mod_commute_table_ui <- function(id) {
       ),
       column(
         width = 12,
-        style = "margin-top: -20px",
+        style = "    margin: -5px 0px 5px 0",
         selectizeInput(
           ns("area"), 
           label = NULL, 
@@ -52,7 +52,7 @@ mod_commute_table_ui <- function(id) {
       uiOutput(ns("headline")),
       div(
         style = "margin-right: -10px; text-align: right",
-        actionLink(ns("center_view"), label = " ", icon = icon("eye-open", lib = "glyphicon")),
+        actionButton(ns("center_view"), label = " ", icon = icon("eye-open", lib = "glyphicon"), title = "Center on Area"),
         prettyCheckbox(
           ns("percent"),
           label = "%",
@@ -61,7 +61,7 @@ mod_commute_table_ui <- function(id) {
           outline = TRUE, shape = "curve", bigger = TRUE
         )
       ), 
-      left_ui_width = 10
+      left_ui_width = 8
     ),
     div(
       style = "margin: 5px -5px 0 -5px; height: calc(100% - 130px)", 
@@ -287,7 +287,8 @@ mod_commute_table <- function(id, state) {
         columns = list(
           code = colDef(show = FALSE),
           region = colDef(show = FALSE),
-          mb = colDef(header = " ", footer = if (! input$percent) "Total", minWidth = 100, style = list(cursor = "pointer", textDecoration = "underline", textDecorationStyle = "dotted")),
+          # mb = colDef(header = " ", footer = if (! input$percent) "Total", minWidth = 100, style = list(cursor = "pointer", textDecoration = "underline", textDecorationStyle = "dotted")),
+          mb = colDef(header = " ", footer = if (! input$percent) "Total", minWidth = 100, class = "area-link"),
           work_at_home = colDef(header = icon("home"), format = format, footer = footer, style = list(borderRight = "1px solid hsl(233, 9%, 22%)")),
           commute_car = colDef(header = icon("car"), footer = footer, format = format),
           commute_public = colDef(header = icon("train"), footer = footer, format = format),

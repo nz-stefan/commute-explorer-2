@@ -18,7 +18,7 @@ mod_commute_filter_ui <- function(id) {
       pickerInput(ns("region"), label = NULL, choices = NULL, width = "200px")
     ),
     top = "0", right = "0", width = "100%",
-    style = "padding: 0 7px 0 20px; margin-top: -15px;"
+    style = "padding: 0 7px 0 20px; margin-top: 6px;"
   )
 }
 

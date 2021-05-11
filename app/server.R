@@ -20,16 +20,19 @@ server <- function(input, output, session) {
   )
   
   # update the app state when the region is selected
-  observeEvent(c(app_state$region, app_state$data_source), {
+  observeEvent(c(app_state$region, app_state$data_source, app_state$direction), {
     if (app_state$region == "All Regions") {
       app_state$d_commute <- D_COMMUTE %>% filter(source == app_state$data_source) %>% select(-source)
     } else {
-      app_state$d_commute <- filter(
-        D_COMMUTE, 
-        source == app_state$data_source, 
-        commute_from_region == app_state$region | commute_to_region == app_state$region
-      ) %>% 
-      select(-source)
+      if (app_state$direction == "depart") {
+        app_state$d_commute <- 
+          filter(D_COMMUTE, source == app_state$data_source, commute_from_region == app_state$region) %>% 
+          select(-source)
+      } else {
+        app_state$d_commute <- 
+          filter(D_COMMUTE, source == app_state$data_source, commute_to_region == app_state$region) %>% 
+          select(-source)
+      }
     }
   }) 
   
