@@ -151,7 +151,7 @@ mod_commute_map <- function(id, state) {
         set_data(data = SF_SHAPE[0,], source_id = "selected-mb") %>%
         set_data(data = SF_SHAPE[0,], source_id = "highlight-mb") %>%
         
-        fit_bounds(st_bbox(sf_shape_subset), maxZoom = 12) %>% 
+        fit_bounds(st_bbox(sf_shape_subset), maxZoom = 10) %>% 
         update_mapboxer()
     })
     
@@ -197,7 +197,7 @@ mod_commute_map <- function(id, state) {
         set_data(data = sf_selected_mb, source_id = "selected-mb") %>% 
         set_data(data = SF_SHAPE[0,], source_id = "highlight-bucket") %>%
         
-        fit_bounds(bbox, maxZoom = 12) %>% 
+        fit_bounds(bbox, maxZoom = 10) %>% 
         update_mapboxer()
     })
     

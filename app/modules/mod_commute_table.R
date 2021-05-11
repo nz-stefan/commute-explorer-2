@@ -185,12 +185,12 @@ mod_commute_table <- function(id, state) {
         area_name <- D_LOOKUP %>% filter(id == state$state$store$selected_mb) %>% pull(name)
         if (state$direction == "depart") {
           tagList(
-            h4("Departures", class = "tile-headline"),
+            h4("Destinations", class = "tile-headline"),
             h5(paste("From", area_name), class = "tile-subheadline")
           )
         } else {
           tagList(
-            h4("Arrivals", class = "tile-headline"),
+            h4("Origins", class = "tile-headline"),
             h5(paste("Into", area_name), class = "tile-subheadline")
           )
         }
