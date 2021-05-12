@@ -16,7 +16,7 @@ mod_commute_table_ui <- function(id) {
         width = 8,
         prettyRadioButtons(
           inputId = ns("direction"),
-          choices = c(FORM = "depart", TO = "arrive"),
+          choices = c(FROM = "depart", TO = "arrive"),
           selected = INITIAL_DIRECTION,
           label = "Toggle Percent View",
           width = "auto",
