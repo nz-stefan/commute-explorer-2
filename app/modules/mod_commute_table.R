@@ -37,7 +37,9 @@ mod_commute_table_ui <- function(id) {
             width = "100px"
           )
         )
-      ),
+      )
+    ),
+    fluidRow(
       column(
         width = 12,
         style = "    margin: -5px 0px 5px 0",
@@ -96,7 +98,12 @@ mod_commute_table <- function(id, state) {
     area_choices <- reactive({
       req(state$region)
       
-      d <- D_LOOKUP_REGION %>% filter(region == state$region) %>% arrange(name)
+      if (state$region == "All Regions") {
+        d <- D_LOOKUP_REGION %>% arrange(name)
+      } else {
+        d <- D_LOOKUP_REGION %>% filter(region == state$region) %>% arrange(name)
+      }
+      
       setNames(d$code, d$name)
     })
 
