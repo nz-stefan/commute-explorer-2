@@ -112,32 +112,79 @@
                   </div>
                   <div class="post-entry">
                     <p>
-                      The New Zealand Census Data provides rich information about how New Zealanders get to places of work and education.
+                      In this project I explore the commuting behaviour of New Zealanders based on the Stats NZ Census 2018 dataset.
+                      I had worked on an <a href="https://nz-stefan.shinyapps.io/commute-explorer/">earlier version</a> of this app last year already.
+                      However, I learned a lot about the UX of web applications recently and
+                      so I decided to revisit my earlier version and make some significant changes.
+                      I wanted to create well-designed and intuitive map based web application that uses colours and visual cues consciously
+                      to capture the user's interest long enough to spent time playing and engaging with the data.
+                      This reworked version was submitted to the <a href="https://blog.rstudio.com/2021/03/11/time-to-shiny/">RStudio Shiny Contest 2021</a>.
                     </p>
-                    <p>
-                      I wanted to create an awesome-looking, map based web application 
-                      that captures the user's interest long enough to spent time playing and engaging with the data.
-                      The UX was very important to achieve this goal. Thus a significant chunk of development time 
-                      was invested into tweaking colours, fonts and the arrangement of UI elements. 
-                    </p>
-                    
                     <p>
                       Plain numbers are often hard to comprehend and so I made some effort to make commuter figures more relatable.
                       The mode of travel histograms give an impression of how fractions of commuters distribute
                       across the various places of residence and work.
-                      I was surprised to see the low number of commuters using public transportation and
-                      that only very few places of work (mostly in the CBDs of the higly populated regions) 
-                      seem to benefit from the availability of trains, buses and ferries.
-                      There are more people working at home than there are commuters using public transport.
-                      Sadly, most of our commutes still rely mostly on cars.
+                      Clicking on a bucket in the charts highlights the corresponding regions in the map. 
+                      This feature allows to find "interesting" regions, e.g. suburbs where the majority of commuters walk to work or
+                      where many residents work at home.
+                      There are indeed regions where 95% or more commuters walk or jog to a place of education.
+                    </p>
+
+                    <div class="row" style="text-align: center">
+                      <div class="col-sm-12">
+                        <figure>
+                          <img src="assets/images/Screenshot_20210513_220745.png" style="width: 100%"/>
+                          <figcaption>Fig.1 - 95% of commuters walk or jog to school in Gardens (Dunedin City)</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+
+                    <p>
+                      The histograms also highlight the difference in commuting behaviours between work and study commuters.
+                      Students tend to use cars much less frequently and instead travel on public transportation, walk or even bike to get around. 
                     </p>
                     
+                    <div class="row" style="text-align: center">
+                      <div class="col-sm-4 col-sm-offset-2">
+                        <figure>
+                          <img src="assets/images/Screenshot_20210513_210528.png" style="width: 100%"/>
+                          <figcaption>Fig.2 - Travel for Work</figcaption>
+                        </figure>
+                      </div>
+                      <div class="col-sm-4">
+                        <figure>
+                          <img src="assets/images/Screenshot_20210513_210438.png" style="width: 100%"/>
+                          <figcaption>Fig.3 - Travel for Education</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+                    
+                    <p>
+                      Major commuting destinations are Auckland University (43,716 commuters), Auckland Airport (22,632),
+                      Wellington Central (43,380) and Christchurch Central-South (17,136).
+                    </p>
+                    <div class="row" style="text-align: center">
+                      <div class="col-sm-6">
+                        <figure>
+                          <img src="assets/images/Screenshot_20210513_214308.png" style="width: 100%"/>
+                          <figcaption>Fig.4 - Auckland Airport</figcaption>
+                        </figure>
+                      </div>
+                      <div class="col-sm-6">
+                        <figure>
+                          <img src="assets/images/Screenshot_20210513_214447.png" style="width: 100%"/>
+                          <figcaption>Fig.5 - Wellington Central</figcaption>
+                        </figure>
+                      </div>
+                    </div>
+
+
                     <h4 class="font-alt">Data</h4>
                     <p>
                       The data behind this application is available in the 
                       <a href="https://datafinder.stats.govt.nz/data/category/census/2018/commuter-view/?_ga=2.143880757.1699143700.1594461462-854170190.1593163189">Datafinder</a> 
                       hosted by Stats NZ. 
-                      Additionally, I used the <a href="https://datafinder.stats.govt.nz/layer/92212-statistical-area-2-2018-generalised/">Statistal Area 2 2018</a> data set 
+                      Additionally, I used the <a href="https://datafinder.stats.govt.nz/layer/92212-statistical-area-2-2018-generalised/">Statistictal Area 2 2018</a> data set 
                       which contains shape files of the statistical areas referenced in the commuter data set.
                       I simplified the polygons in those shape files to reduce the amount of data to display in the browser for this application.
                       I also processed the <a href="https://datafinder.stats.govt.nz/table/104285-geographic-areas-file-2020/">Geographic Areas File 2020</a> to group statistical areas into the main NZ regions. 
@@ -145,8 +192,8 @@
                     
                     <h4 class="font-alt">Application</h4>
                     <p>
-                      This application is developed using the R Shiny web application framework.
-                      I like beautiful data products and so I used <a href="https://shiny.rstudio.com/articles/templates.html">HTML templates</a> to create a unique look for this <a href="https://shiny.rstudio.com/">application</a>. 
+                      This <a href="https://shiny.rstudio.com/">Shiny application</a> uses 
+                      <a href="https://shiny.rstudio.com/articles/templates.html">HTML templates</a> to create a unique look. 
                       The template is called <a href="https://markup.themewagon.com/titan/index.html">Titan</a> and 
                       is freely available for download. 
                       There was a bit more JavaScript foo necessary to customise some of the visualisations.
@@ -158,12 +205,12 @@
                     </p>
                     
                     <p>
+                      All code is on <a href="https://github.com/nz-stefan/commute-explorer-2">GitHub</a> and also available as a public <a href="https://rstudio.cloud/project/2545548">RStudio Cloud project</a>.
+                    </p>
+
+                    <p>
                       The application itself is hosted on RStudio's <a href="https://www.shinyapps.io/">shinyapps.io</a> 
                       which offers push button deployment and a generous free tier.
-                    </p>
-                    
-                    <p>
-                      All code developed for this application is open source and available on <a href="https://github.com/nz-stefan/commute-explorer">GitHub</a>.
                     </p>
                     
                   </div>
@@ -181,14 +228,30 @@
                   </p>
                 </div>
                 <div class="widget">
-                  <h5 class="widget-title font-alt">Charts & Graphs</h5>
+                  <h5 class="widget-title font-alt">Charts & Maps</h5>
                   <p>
-                    The beautiful <a href="https://echarts.apache.org/en">ECHARTS</a> engine is behind all charts used in this project. The engine is very comprehensive, supports many chart types and comes with a selection of stylish themes. John Coene developed an easy to use <a href="https://github.com/JohnCoene/echarts4r">R wrapper</a> complete with Shiny support, documentation and impressive examples.
+                    <a href="https://john-coene.com/">John Coene</a> developed the excellent 
+                    <a href="https://github.com/JohnCoene/echarts4r">echarts4r</a> package which powers the charts of this app. 
+                    Check out his <a href="https://echarts4r.john-coene.com/">project website</a> for comprehensive documentation
+                    along with some impressive examples of this charting engine.
+                  </p>
+                  <p>
+                    The map in this app is powered by MapBox for which <a href="https://github.com/crazycapivara">crazycapivara</a> created the 
+                    R wrapper <a href="https://github.com/crazycapivara/mapboxer">mapboxer</a>. 
+                    The package offers complete Shiny support and is well documented on its 
+                    <a href="https://crazycapivara.github.io/mapboxer/">project website</a>.
+                    Because of the vectorized nature of the map I think MapBox is a good visual step-up from Leaflet.
+                  </p>
+                  <p>
+                    I used the <a href="https://github.com/glin/reactable/">reactable</a> package to render the table in this application.
+                    The package allows extensive formatting options to create a fresh and modern look.
+                    The <a href="https://glin.github.io/reactable/index.html">project website</a> has extensive documentation, demos 
+                    and cookbook examples.
                   </p>
                 </div>
                 <div class="widget">
                   <h5 class="widget-title font-alt">Code</h5>
-                  <p>Open Source and available on <a href="https://github.com/nz-stefan/commute-explorer">GitHub</a></p>
+                  <p>Open Source and available on <a href="https://github.com/nz-stefan/commute-explorer-2">GitHub</a></p>
                 </div>
               </div>
             </div>
